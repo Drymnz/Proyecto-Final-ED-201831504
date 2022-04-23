@@ -1,6 +1,11 @@
 package cunoc.Tree;
 
 public class Tree<T> implements Runnable {
+    private final int wide = 12;
+    private final String nameTree = "Arbol";
+    private final String characterSpace = " ";
+    private final String characterSons = "_";
+
     private NodeBinary<T> main = null;
     private int itemsCounter = 0;
 
@@ -28,7 +33,7 @@ public class Tree<T> implements Runnable {
             this.main = addSort(data, this.main);
         }
         // sort the treee
-        //new Thread(this).start();
+        // new Thread(this).start();
         this.main = sortTree(this.main);
         // System.out.println("agrege :"+data.getValue());
         this.itemsCounter++;
@@ -197,19 +202,46 @@ public class Tree<T> implements Runnable {
     }
 
     // print in console
-    public void printTree() {
-        System.out.println("----------Arbol----------");
-        int level = levelNode(this.main);
-        NodeBinary<T> printNode = this.main;
-        for (int i = 0; i < level; i++) {
-            System.out.print(printNode.getValue());
-            // brothers
-            printNode = this.main;
-            for (int j = 0; j < i; j++) {
-                printNode = printNode.getFather();
-            }
-            System.out.println("");
+    public String printTree() {
+        String finalString = "";
+        int wide = this.wide;
+        int height = this.levelNode(this.main);
+        wide *= height;
+        wide /= 2;
+        finalString = printCharacter(wide, "#") + nameTree + printCharacter(wide, "#") + "\n";
+        finalString += stringTree(wide, this.main) + "\n";
+        return finalString;
+    }
+
+    private String stringTree(int dividers, NodeBinary<T> node) {
+        String finalString = "";
+        if (node != null) {
+            int son = dividers / 2;
+            finalString += stringTree(son, node.getSonL());
+            finalString += stringNode(dividers, node) + "\n";
+            finalString += stringTree(son, node.getSonR());
         }
+        return finalString;
+    }
+
+    private String stringNode(int dividers, NodeBinary<T> node) {
+        String finalString = "";
+        if (node != null) {
+            finalString = printCharacter(dividers, characterSpace) + node.getData().toString()
+                    + printCharacter(dividers, characterSons);
+            return finalString;
+        } else {
+            finalString = printCharacter((dividers * 2 + 3), characterSpace);
+            return finalString;
+        }
+    }
+
+    private String printCharacter(int rerun, String character) {
+        String returnString = "";
+        for (int i = 0; i < rerun; i++) {
+            returnString += character;
+        }
+        return returnString;
     }
 
 }
