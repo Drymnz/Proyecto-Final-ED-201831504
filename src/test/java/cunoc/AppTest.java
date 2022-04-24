@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import cunoc.Converter.TextToImage;
+import cunoc.Converter.TreeGraphConverter;
 import cunoc.Tree.NodeBinary;
 import cunoc.Tree.Tree;
 
@@ -47,30 +48,21 @@ public class AppTest {
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
-        String testPrint = testTree.printTreeHorizontally();
-        System.out.println(testPrint);
+        // String testPrint = testTree.printTreeHorizontally();
+        // System.out.println(testPrint);
         assertTrue(true);
     }
+
     @Test
     public void printTreeVertical() {
         int[] pru = { 8, 4, 8, 2, 20, 100, 90, 92, 97 };
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
-        String testPrint = testTree.printTreeVertical();
-        System.out.println(testPrint);
+        // String testPrint = testTree.printTreeVertical();
+        // System.out.println(testPrint);
         assertTrue(true);
     }
-
-//    ########################Arbol########################
-//  [2]_
-//      [4]___
-//            [8]______
-//      [20]___
-//                        [90]____________
-//      [92]___
-//            [97]______
-//      [100]___
 
     @Test
     public void addInOrderTest() {
@@ -95,7 +87,7 @@ public class AppTest {
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
-        String testPrint = testTree.printTreeHorizontally();
+        String testPrint = testTree.printTreeVertical();
         File file = new File("image.png");
         if (file.exists()) {
             try {
@@ -104,7 +96,26 @@ public class AppTest {
                 assertTrue(false);
             }
         }
-        boolean accept = new TextToImage(testPrint, file,25).converter();
+        boolean accept = new TextToImage(testPrint, file, 25).converter();
         assertTrue(accept);
+    }
+
+    @Test
+    public void conversionTreeToFileImage() {
+        int[] pru = { 8, 4, 8, 2, 20, 100, 90, 92, 97 };
+        for (int i : pru) {
+            testTree.add(new NodeBinary<num>(new num(i), i));
+        }
+        String testPrint = testTree.printTreeVertical();
+        File file = new File("image01.png");
+        if (file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                assertTrue(false);
+            }
+        }
+        assertTrue(new TextToImage(testPrint, file, 25)
+                .converterFinal(new TreeGraphConverter<>(testTree, 50).converter(1280, 720)));
     }
 }

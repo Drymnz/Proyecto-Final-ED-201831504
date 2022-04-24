@@ -17,6 +17,7 @@ public class TextToImage extends JFrame {
     private int sizeText;
     private Graphics2D graphic;
 
+
     public TextToImage(String text, File fileOut, int sizeText) {
         this.text = text;
         this.fileOut = fileOut;
@@ -32,12 +33,12 @@ public class TextToImage extends JFrame {
         Font font = new Font("Tahoma", Font.PLAIN, sizeText);
         String array[] = this.text.split("\n");
         int width = array[0].length() * this.sizeText;
-        int height = (array.length * this.sizeText * array.length) / 3;
+        int height = (( this.sizeText * array.length) *10)  ;
 
         // create a BufferedImage object
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         graphic = image.createGraphics();
-        // dibujar y colorear
+       // drawing and coloring
         graphic.setColor(Color.BLACK);
         graphic.fillRect(0, 0, width, height);
         graphic.setFont(font);
@@ -56,7 +57,7 @@ public class TextToImage extends JFrame {
         return converterFinal(image);
     }
 
-    private boolean converterFinal(BufferedImage image) {
+    public boolean converterFinal(BufferedImage image) {
         try {
             ImageIO.write(image, "png", fileOut);
             return true;

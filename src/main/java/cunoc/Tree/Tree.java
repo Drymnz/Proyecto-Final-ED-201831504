@@ -1,7 +1,7 @@
 package cunoc.Tree;
 
 public class Tree<T> implements Runnable {
-    private final int wide = 12;
+    private final int wide = 10;
     private final String nameTree = "Arbol";
     private final String characterSpace = " ";
     private final String characterSons = "_";
@@ -104,7 +104,7 @@ public class Tree<T> implements Runnable {
                 balance = levelNode(sort.getSonL()) - levelNode(sort.getSonR());
             } while (balance > 1 | balance < -1);
         }
-        //for subtrees
+        // for subtrees
         if (sort.getSonL() != null) {
             sort.setSonL(balanceTree(sort.getSonL()));
         }
@@ -204,34 +204,34 @@ public class Tree<T> implements Runnable {
         return finalString;
     }
 
+    // return a string from the tree
     public String printTreeVertical() {
         String finalString = basePrintTree();
-        //finalString += stringTreeVertical(wide, this.main) + "\n";
         int length = this.getHeight();
-        int center = this.wide*length;
+        int center = this.wide * length;
         for (int i = 0; i < length; i++) {
-            center/=2;
             NodeBinary<T> arrayNode[] = arrayNodeLevel(i, this.main, new NodeBinary[(i * 2) + 1], 0);
             for (int j = 0; j < arrayNode.length; j++) {
-                finalString += stringNode(center, arrayNode[j]); 
+                finalString += stringNode(center, arrayNode[j]);
             }
+            center /= 2;
             finalString += "\n";
         }
         return finalString;
     }
 
-    private NodeBinary<T>[] arrayNodeLevel(int level, NodeBinary<T> node, NodeBinary<T>[] arrayNode, int poss) {
+    public NodeBinary<T>[] arrayNodeLevel(int level, NodeBinary<T> node, NodeBinary<T>[] arrayNode, int poss) {
         if (poss < arrayNode.length) {
             if (level == 0) {
                 arrayNode[poss] = node;
             } else if (level > 0) {
-                poss = (poss==1)?  poss+1:poss;
+                poss = (poss == 1) ? poss + 1 : poss;
                 if (node == null) {
-                    arrayNode = arrayNodeLevel((level - 1), null, arrayNode, poss*1);
-                    arrayNode = arrayNodeLevel((level - 1), null, arrayNode, (poss*1)+1);
+                    arrayNode = arrayNodeLevel((level - 1), null, arrayNode, poss * 1);
+                    arrayNode = arrayNodeLevel((level - 1), null, arrayNode, (poss * 1) + 1);
                 } else {
-                    arrayNode = arrayNodeLevel((level - 1), node.getSonL(), arrayNode, poss*1);
-                    arrayNode = arrayNodeLevel((level - 1), node.getSonR(), arrayNode, (poss*1)+1);
+                    arrayNode = arrayNodeLevel((level - 1), node.getSonL(), arrayNode, poss * 1);
+                    arrayNode = arrayNodeLevel((level - 1), node.getSonR(), arrayNode, (poss * 1) + 1);
                 }
             }
         }
@@ -247,22 +247,7 @@ public class Tree<T> implements Runnable {
         return arrayNode;
     }
 
-    private String stringTreeVertical(final int dividers, final NodeBinary<T> node) {
-        String finalString = "";
-        if (node == null)
-            return finalString;
-        finalString += printCharacter(dividers, characterSpace) + stringNode(dividers, node) + "\n";
-        if (node.getSonL() != null)
-            finalString += stringNode(dividers, node.getSonL());
-        if (node.getSonL() != null)
-            finalString += stringNode(dividers, node.getSonR());
-
-        finalString += stringTreeVertical(dividers, node.getSonL());
-        finalString += stringTreeVertical(dividers, node.getSonR());
-        return finalString;
-    }
-
-    private String basePrintTree() {
+    public String basePrintTree() {
         String finalString = "";
         int wide = this.wide;
         wide *= this.getHeight();
@@ -288,7 +273,7 @@ public class Tree<T> implements Runnable {
         String finalString = "";
         if (node != null) {
             finalString = printCharacter(dividers, characterSpace) + node.getData().toString()
-                    + printCharacter(dividers, characterSons);
+                    + printCharacter(dividers, characterSpace);
             return finalString;
         } else {
             finalString = printCharacter((dividers * 2 + 3), characterSpace);
@@ -314,7 +299,15 @@ public class Tree<T> implements Runnable {
         return main.getData();
     }
 
+    public NodeBinary<T> getMain() {
+        return this.main;
+    }
+
     public int getHeight() {
         return this.levelNode(this.main);
+    }
+
+    public int getWide() {
+        return this.wide;
     }
 }
