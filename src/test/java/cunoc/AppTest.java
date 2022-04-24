@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.JFrame;
-
 import org.junit.Test;
 
 import cunoc.Converter.TextToImage;
@@ -49,10 +47,30 @@ public class AppTest {
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
-        // String testPrint = testTree.printTree();
-        // System.out.println(testPrint);
+        String testPrint = testTree.printTreeHorizontally();
+        System.out.println(testPrint);
         assertTrue(true);
     }
+    @Test
+    public void printTreeVertical() {
+        int[] pru = { 8, 4, 8, 2, 20, 100, 90, 92, 97 };
+        for (int i : pru) {
+            testTree.add(new NodeBinary<num>(new num(i), i));
+        }
+        String testPrint = testTree.printTreeVertical();
+        System.out.println(testPrint);
+        assertTrue(true);
+    }
+
+//    ########################Arbol########################
+//  [2]_
+//      [4]___
+//            [8]______
+//      [20]___
+//                        [90]____________
+//      [92]___
+//            [97]______
+//      [100]___
 
     @Test
     public void addInOrderTest() {
@@ -77,7 +95,7 @@ public class AppTest {
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
-        String testPrint = testTree.printTree();
+        String testPrint = testTree.printTreeHorizontally();
         File file = new File("image.png");
         if (file.exists()) {
             try {

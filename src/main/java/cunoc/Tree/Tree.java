@@ -9,23 +9,16 @@ public class Tree<T> implements Runnable {
     private NodeBinary<T> main = null;
     private int itemsCounter = 0;
 
-    public int getItemsCounter() {
-        return this.itemsCounter;
-    }
-
-    public T getMainData() {
-        return main.getData();
+    // Builder
+    public Tree(final NodeBinary<T> data) {
+        add(data);
     }
 
     public Tree() {
     }
 
-    public Tree(NodeBinary<T> data) {
-        add(data);
-    }
-
     // add node in tree
-    public void add(NodeBinary<T> data) {
+    public void add(final NodeBinary<T> data) {
         // if the mein null
         if (this.main == null) {
             this.main = data;
@@ -34,12 +27,11 @@ public class Tree<T> implements Runnable {
         }
         // sort the treee
         // new Thread(this).start();
-        this.main = sortTree(this.main);
-        // System.out.println("agrege :"+data.getValue());
+        this.main = balanceTree(this.main);
         this.itemsCounter++;
     }
 
-    private NodeBinary<T> addSort(NodeBinary<T> data, NodeBinary<T> branch) {
+    private NodeBinary<T> addSort(final NodeBinary<T> data, final NodeBinary<T> branch) {
         if (!(branch.getValue() == data.getValue())) {
             if (branch.getValue() < data.getValue()) {
                 if (branch.getSonR() == null) {
@@ -60,7 +52,7 @@ public class Tree<T> implements Runnable {
         return branch;
     }
 
-    private boolean search(NodeBinary<T> data, NodeBinary<T> branch) {
+    private boolean search(final NodeBinary<T> data, final NodeBinary<T> branch) {
         if (data != null && branch != null) {
             if (data.getValue() == branch.getValue()) {
                 return true;
@@ -74,7 +66,7 @@ public class Tree<T> implements Runnable {
         }
     }
 
-    private NodeBinary<T> lastLTree(NodeBinary<T> sort) {
+    private NodeBinary<T> lastLTree(final NodeBinary<T> sort) {
         if (sort.getSonL() != null) {
             sort.getSonL().setFather(sort);
             return lastLTree(sort.getSonL());
@@ -83,7 +75,7 @@ public class Tree<T> implements Runnable {
         }
     }
 
-    private NodeBinary<T> lastRTree(NodeBinary<T> sort) {
+    private NodeBinary<T> lastRTree(final NodeBinary<T> sort) {
         if (sort.getSonR() != null) {
             sort.getSonR().setFather(sort);
             return lastLTree(sort.getSonR());
@@ -95,11 +87,12 @@ public class Tree<T> implements Runnable {
     @Override
     public void run() {
         // automatically balance
-        this.main = this.sortTree(this.main);
+        this.main = this.balanceTree(this.main);
     }
 
-    private NodeBinary<T> sortTree(NodeBinary<T> sort) {
-        int level = levelNode(sort);
+    // the tree swings only with simple movements
+    private NodeBinary<T> balanceTree(NodeBinary<T> sort) {
+        final int level = levelNode(sort);
         if (level > 1) {
             int balance = levelNode(sort.getSonL()) - levelNode(sort.getSonR());
             do {
@@ -111,20 +104,21 @@ public class Tree<T> implements Runnable {
                 balance = levelNode(sort.getSonL()) - levelNode(sort.getSonR());
             } while (balance > 1 | balance < -1);
         }
+        //for subtrees
         if (sort.getSonL() != null) {
-            sort.setSonL(sortTree(sort.getSonL()));
+            sort.setSonL(balanceTree(sort.getSonL()));
         }
         if (sort.getSonR() != null) {
-            sort.setSonR(sortTree(sort.getSonR()));
+            sort.setSonR(balanceTree(sort.getSonR()));
         }
         return sort;
     }
 
     // simple rotation to the left
     private NodeBinary<T> rotateL(NodeBinary<T> rota) {
-        NodeBinary<T> add = new NodeBinary<T>(rota.getData(), rota.getValue());
+        final NodeBinary<T> add = new NodeBinary<T>(rota.getData(), rota.getValue());
         if (rota.getSonL() != null) {
-            NodeBinary<T> addSon = new NodeBinary<T>(rota.getSonL().getData(), rota.getSonL().getValue());
+            final NodeBinary<T> addSon = new NodeBinary<T>(rota.getSonL().getData(), rota.getSonL().getValue());
             addSon.setSonL(rota.getSonL().getSonL());
             addSon.setSonR(rota.getSonL().getSonR());
             add.setSonR(rota.getSonR());
@@ -135,9 +129,9 @@ public class Tree<T> implements Runnable {
 
     // simple rotation to the right
     private NodeBinary<T> rotateR(NodeBinary<T> rota) {
-        NodeBinary<T> add = new NodeBinary<T>(rota.getData(), rota.getValue());
+        final NodeBinary<T> add = new NodeBinary<T>(rota.getData(), rota.getValue());
         if (rota.getSonR() != null) {
-            NodeBinary<T> addSon = new NodeBinary<T>(rota.getSonR().getData(), rota.getSonR().getValue());
+            final NodeBinary<T> addSon = new NodeBinary<T>(rota.getSonR().getData(), rota.getSonR().getValue());
             addSon.setSonL(rota.getSonR().getSonL());
             addSon.setSonR(rota.getSonR().getSonR());
             add.setSonL(rota.getSonL());
@@ -147,7 +141,8 @@ public class Tree<T> implements Runnable {
         return rota;
     }
 
-    private int levelNode(NodeBinary<T> node) {
+    // node height
+    private int levelNode(final NodeBinary<T> node) {
         if (node == null) {
             return 0;
         } else {
@@ -155,13 +150,14 @@ public class Tree<T> implements Runnable {
         }
     }
 
-    private int maxNum(int one, int two) {
+    // compare two ints to return the larger
+    private int maxNum(final int one, final int two) {
         return (one > two) ? one : two;
     }
 
-    // array of tree pos orden
+    // array of tree in order
     public int[] inOrderArray() {
-        int[] ret = new int[this.itemsCounter];
+        final int[] ret = new int[this.itemsCounter];
         int counter = 0;
         NodeBinary<T> printNode = lastLTree(this.main);
         while (counter < this.itemsCounter) {
@@ -192,8 +188,8 @@ public class Tree<T> implements Runnable {
         return ret;
     }
 
-    private boolean searchArrayInt(int data, int[] array) {
-        for (int i : array) {
+    private boolean searchArrayInt(final int data, final int[] array) {
+        for (final int i : array) {
             if (i == data) {
                 return true;
             }
@@ -201,30 +197,94 @@ public class Tree<T> implements Runnable {
         return false;
     }
 
-    // print in console
-    public String printTree() {
-        String finalString = "";
-        int wide = this.wide;
-        int height = this.levelNode(this.main);
-        wide *= height;
-        wide /= 2;
-        finalString = printCharacter(wide, "#") + nameTree + printCharacter(wide, "#") + "\n";
+    // return a string from the tree
+    public String printTreeHorizontally() {
+        String finalString = basePrintTree();
         finalString += stringTree(wide, this.main) + "\n";
         return finalString;
     }
 
-    private String stringTree(int dividers, NodeBinary<T> node) {
+    public String printTreeVertical() {
+        String finalString = basePrintTree();
+        //finalString += stringTreeVertical(wide, this.main) + "\n";
+        int length = this.getHeight();
+        int center = this.wide*length;
+        for (int i = 0; i < length; i++) {
+            center/=2;
+            NodeBinary<T> arrayNode[] = arrayNodeLevel(i, this.main, new NodeBinary[(i * 2) + 1], 0);
+            for (int j = 0; j < arrayNode.length; j++) {
+                finalString += stringNode(center, arrayNode[j]); 
+            }
+            finalString += "\n";
+        }
+        return finalString;
+    }
+
+    private NodeBinary<T>[] arrayNodeLevel(int level, NodeBinary<T> node, NodeBinary<T>[] arrayNode, int poss) {
+        if (poss < arrayNode.length) {
+            if (level == 0) {
+                arrayNode[poss] = node;
+            } else if (level > 0) {
+                poss = (poss==1)?  poss+1:poss;
+                if (node == null) {
+                    arrayNode = arrayNodeLevel((level - 1), null, arrayNode, poss*1);
+                    arrayNode = arrayNodeLevel((level - 1), null, arrayNode, (poss*1)+1);
+                } else {
+                    arrayNode = arrayNodeLevel((level - 1), node.getSonL(), arrayNode, poss*1);
+                    arrayNode = arrayNodeLevel((level - 1), node.getSonR(), arrayNode, (poss*1)+1);
+                }
+            }
+        }
+        return arrayNode;
+    }
+
+    private NodeBinary<T>[] addArray(NodeBinary<T>[] arrayNode, NodeBinary<T> add) {
+        for (int i = 0; i < arrayNode.length; i++) {
+            if (arrayNode[i] == null) {
+                arrayNode[i] = add;
+            }
+        }
+        return arrayNode;
+    }
+
+    private String stringTreeVertical(final int dividers, final NodeBinary<T> node) {
+        String finalString = "";
+        if (node == null)
+            return finalString;
+        finalString += printCharacter(dividers, characterSpace) + stringNode(dividers, node) + "\n";
+        if (node.getSonL() != null)
+            finalString += stringNode(dividers, node.getSonL());
+        if (node.getSonL() != null)
+            finalString += stringNode(dividers, node.getSonR());
+
+        finalString += stringTreeVertical(dividers, node.getSonL());
+        finalString += stringTreeVertical(dividers, node.getSonR());
+        return finalString;
+    }
+
+    private String basePrintTree() {
+        String finalString = "";
+        int wide = this.wide;
+        wide *= this.getHeight();
+        wide /= 2;
+        finalString = printCharacter(wide, "#") + nameTree + printCharacter(wide, "#") + "\n";
+        return finalString;
+    }
+
+    // return the tree horizontally
+    private String stringTree(final int dividers, final NodeBinary<T> node) {
         String finalString = "";
         if (node != null) {
-            int son = dividers / 2;
+            final int son = dividers / 2;
             finalString += stringTree(son, node.getSonL());
-            finalString += printCharacter(dividers,characterSpace) + stringNode(dividers, node) + "\n";
+            finalString += printCharacter(dividers, characterSpace) + stringNode(dividers, node) + "\n";
             finalString += stringTree(son, node.getSonR());
         }
         return finalString;
     }
 
-    private String stringNode(int dividers, NodeBinary<T> node) {
+    // return string the node
+    private String stringNode(final int dividers, final NodeBinary<T> node) {
         String finalString = "";
         if (node != null) {
             finalString = printCharacter(dividers, characterSpace) + node.getData().toString()
@@ -236,7 +296,8 @@ public class Tree<T> implements Runnable {
         }
     }
 
-    private String printCharacter(int rerun, String character) {
+    // print character sequence
+    private String printCharacter(final int rerun, final String character) {
         String returnString = "";
         for (int i = 0; i < rerun; i++) {
             returnString += character;
@@ -244,4 +305,16 @@ public class Tree<T> implements Runnable {
         return returnString;
     }
 
+    // Get
+    public int getItemsCounter() {
+        return this.itemsCounter;
+    }
+
+    public T getMainData() {
+        return main.getData();
+    }
+
+    public int getHeight() {
+        return this.levelNode(this.main);
+    }
 }
