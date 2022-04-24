@@ -4,45 +4,59 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.RenderingHints;
 import java.awt.Color;
 
-public class TextToImage {
+public class TextToImage extends JFrame {
     private String text;
     private File fileOut;
+    private int sizeText;
+    private Graphics2D graphic;
 
-    public TextToImage(String text, File fileOut) {
+    public TextToImage(String text, File fileOut, int sizeText) {
         this.text = text;
         this.fileOut = fileOut;
+        this.sizeText = sizeText;
+    }
+
+    public TextToImage(Graphics2D graphic) {
+        this.graphic = graphic;
     }
 
     public boolean converter() {
-        BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);// Represents an image with 8-bit
-                                                                                   // RGBA color components packed into
-                                                                                   // integer pixels.
-        Graphics2D graphics2d = image.createGraphics();
-        Font font = new Font("TimesNewRoman", Font.BOLD, 24);
-        graphics2d.setFont(font);
-        FontMetrics fontmetrics = graphics2d.getFontMetrics();
-        int width = fontmetrics.stringWidth(this.text);
-        int height = fontmetrics.getHeight();
-        graphics2d.dispose();
 
-        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        graphics2d = image.createGraphics();
-        graphics2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        graphics2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-        graphics2d.setFont(font);
-        fontmetrics = graphics2d.getFontMetrics();
-        graphics2d.setColor(Color.GREEN);
-        graphics2d.drawString(this.text, 0, fontmetrics.getAscent());
-        graphics2d.dispose();
+        Font font = new Font("Tahoma", Font.PLAIN, sizeText);
+        String array[] = this.text.split("\n");
+        int width = array[0].length() * this.sizeText;
+        int height = (array.length * this.sizeText * array.length) / 3;
+
+        // create a BufferedImage object
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        graphic = image.createGraphics();
+        // dibujar y colorear
+        graphic.setColor(Color.BLACK);
+        graphic.fillRect(0, 0, width, height);
+        graphic.setFont(font);
+        graphic.setPaint(Color.CYAN);
+        graphic.fillRect(50, 50, width - 100, height - 100);
+        graphic.setColor(Color.BLACK);
+        for (int i = 0; i < array.length; i++) {
+            graphic.drawString(array[i], 150, (50 * i) + 100);
+        }
+        graphic.dispose();
+        return converterFinal(image);
+    }
+
+    public boolean converterGraphic(int w, int h) {
+        BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        return converterFinal(image);
+    }
+
+    private boolean converterFinal(BufferedImage image) {
         try {
             ImageIO.write(image, "png", fileOut);
             return true;

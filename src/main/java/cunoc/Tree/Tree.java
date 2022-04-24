@@ -218,7 +218,7 @@ public class Tree<T> implements Runnable {
         if (node != null) {
             int son = dividers / 2;
             finalString += stringTree(son, node.getSonL());
-            finalString += stringNode(dividers, node) + "\n";
+            finalString += printCharacter(dividers,characterSpace) + stringNode(dividers, node) + "\n";
             finalString += stringTree(son, node.getSonR());
         }
         return finalString;

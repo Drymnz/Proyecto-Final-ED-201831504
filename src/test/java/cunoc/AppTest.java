@@ -2,8 +2,14 @@ package cunoc;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JFrame;
+
 import org.junit.Test;
 
+import cunoc.Converter.TextToImage;
 import cunoc.Tree.NodeBinary;
 import cunoc.Tree.Tree;
 
@@ -21,11 +27,13 @@ public class AppTest {
         public int getNum() {
             return this.num;
         }
+
         @Override
         public String toString() {
-            return "["+String.valueOf(num)+"]";
+            return "[" + String.valueOf(num) + "]";
         }
     }
+
     Tree<num> testTree = new Tree<num>();
 
     @Test
@@ -34,14 +42,15 @@ public class AppTest {
         num a = testTree.getMainData();
         assertTrue(a.getNum() == 1);
     }
+
     @Test
-    public void printTree(){
-        int[] pru = {8,4,8,2,20,100,90,92,97};
+    public void printTree() {
+        int[] pru = { 8, 4, 8, 2, 20, 100, 90, 92, 97 };
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
-        //String testPrint = testTree.printTree();
-        //System.out.println(testPrint);
+        // String testPrint = testTree.printTree();
+        // System.out.println(testPrint);
         assertTrue(true);
     }
 
@@ -53,22 +62,31 @@ public class AppTest {
         }
         int[] array = testTree.inOrderArray();
         String prueva = "";
-        //System.out.println("----------arry inOrden----------");
+        // System.out.println("----------arry inOrden----------");
         for (int i : array) {
             prueva += "[" + i + "]";
         }
-        //System.out.print(prueva);
-        //System.out.println("----------arry inOrden----------");
+        // System.out.print(prueva);
+        // System.out.println("----------arry inOrden----------");
         assertTrue(prueva.equals("[7][32][42][47][60][80]"));
     }
+
     @Test
     public void conversionStringToFile() {
-        int[] pru = {8,4,8,2,20,100,90,92,97};
+        int[] pru = { 8, 4, 8, 2, 20, 100, 90, 92, 97 };
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
-        //String testPrint = testTree.printTree();
-        //System.out.println(testPrint);
-        assertTrue(true);
+        String testPrint = testTree.printTree();
+        File file = new File("image.png");
+        if (file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                assertTrue(false);
+            }
+        }
+        boolean accept = new TextToImage(testPrint, file,25).converter();
+        assertTrue(accept);
     }
 }
