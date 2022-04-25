@@ -83,7 +83,7 @@ public class AppTest {
 
     @Test
     public void conversionStringToFile() {
-        int[] pru = { 8, 4, 8, 2, 20, 100, 90, 92, 97 };
+        int[] pru = { 166, 197, 161, 11, 119, 184, 206, 54, 67,166 ,101,253};
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
@@ -102,7 +102,7 @@ public class AppTest {
 
     @Test
     public void conversionTreeToFileImage() {
-        int[] pru = { 8, 4, 8, 2, 20, 100, 90, 92, 97 };
+        int[] pru = { 166, 197, 161, 11, 119, 184, 206, 54, 67,166 ,101,253};
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
@@ -116,6 +116,6 @@ public class AppTest {
             }
         }
         assertTrue(new TextToImage(testPrint, file, 25)
-                .converterFinal(new TreeGraphConverter<>(testTree, 50).converter(1280, 720)));
+                .converterFinal(new TreeGraphConverter<>(testTree, 50).converter()));
     }
 }
