@@ -45,7 +45,7 @@ public class TreeGraphConverter<T> {
                     String printNode = arrayNode[j].getData().toString();
                     int possX = (center * j * 2) + center;
                     int possY = ((i * sizeText * 4) + spectText);
-                    int widthText = (printNode.length() * sizeText) - sizeText;
+                    int widthText = (printNode.length() * sizeText);
                     int heightText = sizeText + (sizeText / 2);
                     graphic.setPaint(Color.WHITE);// color rectangulo
                     this.graphic.fillRect(possX, possY, widthText, heightText);

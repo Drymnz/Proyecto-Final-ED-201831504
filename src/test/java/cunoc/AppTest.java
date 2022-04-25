@@ -9,6 +9,9 @@ import org.junit.Test;
 
 import cunoc.Converter.TextToImage;
 import cunoc.Converter.TreeGraphConverter;
+import cunoc.Letter.Letter;
+import cunoc.Letter.ListSimbol;
+import cunoc.Letter.ListType;
 import cunoc.Tree.NodeBinary;
 import cunoc.Tree.Tree;
 
@@ -83,7 +86,7 @@ public class AppTest {
 
     @Test
     public void conversionStringToFile() {
-        int[] pru = { 166, 197, 161, 11, 119, 184, 206, 54, 67,166 ,101,253};
+        int[] pru = { 166, 197, 161, 11, 119, 184, 206, 54, 67, 166, 101, 253 };
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
@@ -102,7 +105,7 @@ public class AppTest {
 
     @Test
     public void conversionTreeToFileImage() {
-        int[] pru = { 166, 197, 161, 11, 119, 184, 206, 54, 67,166 ,101,253};
+        int[] pru = { 166, 197, 161, 11, 119, 184, 206, 54, 67, 166, 101, 253 };
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
@@ -117,5 +120,33 @@ public class AppTest {
         }
         assertTrue(new TextToImage(testPrint, file, 25)
                 .converterFinal(new TreeGraphConverter<>(testTree, 50).converter()));
+    }
+
+    @Test
+    public void treeAsLetter() {
+
+        Tree<Letter> testTreeLetter = new Tree<Letter>();
+        Letter[] pru = {
+                new Letter(ListSimbol.HEART, ListType.FIVE),
+                new Letter(ListSimbol.DIAMOND, ListType.EIGHT),
+                new Letter(ListSimbol.CLOVER, ListType.FOUR), 
+                new Letter(ListSimbol.HEART, ListType.THREE),
+                new Letter(ListSimbol.CLOVER, ListType.AS),
+                new Letter(ListSimbol.HEART, ListType.NINE)
+        };
+        for (Letter i : pru) {
+            testTreeLetter.add(new NodeBinary<Letter>(i, i.getValue().getValue()));
+        }
+        String testPrint = testTreeLetter.printTreeVertical();
+        File file = new File("image02.png");
+        if (file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                assertTrue(false);
+            }
+        }
+        assertTrue(new TextToImage(testPrint, file, 25)
+                .converterFinal(new TreeGraphConverter<>(testTreeLetter, 50).converter()));
     }
 }
