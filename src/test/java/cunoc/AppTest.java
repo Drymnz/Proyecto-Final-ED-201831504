@@ -7,13 +7,14 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import cunoc.Converter.TextToImage;
-import cunoc.Converter.TreeGraphConverter;
-import cunoc.Letter.Letter;
-import cunoc.Letter.ListSimbol;
-import cunoc.Letter.ListType;
-import cunoc.Tree.NodeBinary;
-import cunoc.Tree.Tree;
+import cunoc.Logic.Converter.TextToImage;
+import cunoc.Logic.Converter.TreeGraphConverter;
+import cunoc.Logic.Letter.Letter;
+import cunoc.Logic.Letter.ListSimbol;
+import cunoc.Logic.Letter.ListType;
+import cunoc.Logic.Tree.NodeBinary;
+import cunoc.Logic.Tree.Tree;
+
 
 /**
  * Unit test for simple App.
@@ -39,14 +40,12 @@ public class AppTest {
     Tree<num> testTree = new Tree<num>();
 
     @Test
-    public void fritTest() {
-        testTree.add(new NodeBinary<num>(new num(1), 1));
-        num a = testTree.getMainData();
-        assertTrue(a.getNum() == 1);
+    public void checkAddNode() {
+        assertTrue(testTree.addBoolean(new NodeBinary<num>(new num(1), 1)));
     }
 
     @Test
-    public void printTree() {
+    public void printTreeString() {
         int[] pru = { 8, 4, 8, 2, 20, 100, 90, 92, 97 };
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
@@ -57,7 +56,7 @@ public class AppTest {
     }
 
     @Test
-    public void printTreeVertical() {
+    public void printTreeVerticalString() {
         int[] pru = { 8, 4, 8, 2, 20, 100, 90, 92, 97 };
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
@@ -68,7 +67,7 @@ public class AppTest {
     }
 
     @Test
-    public void addInOrderTest() {
+    public void checkInOrder() {
         int[] pru = { 60, 47, 42, 32, 80, 7 };
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
@@ -109,7 +108,6 @@ public class AppTest {
         for (int i : pru) {
             testTree.add(new NodeBinary<num>(new num(i), i));
         }
-        String testPrint = testTree.printTreeVertical();
         File file = new File("image01.png");
         if (file.exists()) {
             try {
@@ -118,7 +116,7 @@ public class AppTest {
                 assertTrue(false);
             }
         }
-        assertTrue(new TextToImage(testPrint, file, 25)
+        assertTrue(new TextToImage(file)
                 .converterFinal(new TreeGraphConverter<>(testTree, 50).converter()));
     }
 
@@ -129,7 +127,7 @@ public class AppTest {
         Letter[] pru = {
                 new Letter(ListSimbol.HEART, ListType.FIVE),
                 new Letter(ListSimbol.DIAMOND, ListType.EIGHT),
-                new Letter(ListSimbol.CLOVER, ListType.FOUR), 
+                new Letter(ListSimbol.CLOVER, ListType.FOUR),
                 new Letter(ListSimbol.HEART, ListType.THREE),
                 new Letter(ListSimbol.CLOVER, ListType.AS),
                 new Letter(ListSimbol.HEART, ListType.NINE)
@@ -137,7 +135,6 @@ public class AppTest {
         for (Letter i : pru) {
             testTreeLetter.add(new NodeBinary<Letter>(i, i.getValue().getValue()));
         }
-        String testPrint = testTreeLetter.printTreeVertical();
         File file = new File("image02.png");
         if (file.exists()) {
             try {
@@ -146,7 +143,7 @@ public class AppTest {
                 assertTrue(false);
             }
         }
-        assertTrue(new TextToImage(testPrint, file, 25)
+        assertTrue(new TextToImage(file)
                 .converterFinal(new TreeGraphConverter<>(testTreeLetter, 50).converter()));
     }
 }

@@ -1,4 +1,4 @@
-package cunoc.Converter;
+package cunoc.Logic.Converter;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,15 +17,19 @@ public class TextToImage extends JFrame {
     private int sizeText;
     private Graphics2D graphic;
 
-
     public TextToImage(String text, File fileOut, int sizeText) {
         this.text = text;
         this.fileOut = fileOut;
         this.sizeText = sizeText;
     }
 
-    public TextToImage(Graphics2D graphic) {
+    public TextToImage(Graphics2D graphic, File fileOut) {
         this.graphic = graphic;
+        this.fileOut = fileOut;
+    }
+
+    public TextToImage(File fileOut) {
+        this.fileOut = fileOut;
     }
 
     public boolean converter() {
@@ -33,12 +37,12 @@ public class TextToImage extends JFrame {
         Font font = new Font("Tahoma", Font.PLAIN, sizeText);
         String array[] = this.text.split("\n");
         int width = array[0].length() * this.sizeText;
-        int height = (( this.sizeText * array.length) *10)  ;
+        int height = ((this.sizeText * array.length) * 10);
 
         // create a BufferedImage object
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         graphic = image.createGraphics();
-       // drawing and coloring
+        // drawing and coloring
         graphic.setColor(Color.BLACK);
         graphic.fillRect(0, 0, width, height);
         graphic.setFont(font);

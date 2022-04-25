@@ -1,4 +1,4 @@
-package cunoc.Tree;
+package cunoc.Logic.Tree;
 
 public class NodeBinary<T> {
     private T data;

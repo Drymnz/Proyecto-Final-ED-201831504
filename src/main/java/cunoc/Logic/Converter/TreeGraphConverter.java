@@ -1,9 +1,11 @@
-package cunoc.Converter;
+package cunoc.Logic.Converter;
 
-import cunoc.Tree.NodeBinary;
-import cunoc.Tree.Tree;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
+import cunoc.Logic.Tree.NodeBinary;
+import cunoc.Logic.Tree.Tree;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.BasicStroke;

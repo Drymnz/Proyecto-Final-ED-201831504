@@ -1,4 +1,4 @@
-package cunoc.Letter;
+package cunoc.Logic.Letter;
 
 public class Letter {
     private ListSimbol simbol;
