@@ -7,15 +7,32 @@ import cunoc.Logic.Letter.ListType;
 public class TextLetter {
     private String text;
     private ListSimbol type;
+    private int typeInt;
 
-    public TextLetter(String text, ListSimbol type) {
+    public TextLetter(String text, int typeInt) {
         this.text = text;
-        this.type = type;
+        this.typeInt = typeInt;
     }
 
     public Letter converter() {
         String array[] = this.text.split("\"");
         ListType value = null;
+        switch (this.typeInt) {
+            case 163:
+                type = ListSimbol.CLOVER;
+                break;
+            case 165:
+                type = ListSimbol.HEART;
+                break;
+            case 166:
+                type = ListSimbol.DIAMOND;
+                break;
+            case 160:
+                type = ListSimbol.APPLE;
+                break;
+            default:
+                break;
+        }
         switch (array[array.length - 1]) {
             case "1":
                 value = ListType.AS;

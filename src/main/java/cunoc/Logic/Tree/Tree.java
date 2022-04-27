@@ -344,4 +344,8 @@ public class Tree<T> implements Runnable {
     public int getWide() {
         return this.wide;
     }
+
+    public boolean isEmpty() {
+        return this.main == null;
+    }
 }

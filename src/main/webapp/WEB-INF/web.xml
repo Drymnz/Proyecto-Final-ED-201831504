@@ -4,8 +4,24 @@
         <servlet-name>GameStart</servlet-name>
         <servlet-class>cunoc.Servlet.ServletGameStart</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Status-AvlTree</servlet-name>
+        <servlet-class>cunoc.Servlet.ServletGameStart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Tree-User</servlet-name>
+        <servlet-class>cunoc.Servlet.ServletTreeUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GameStart</servlet-name>
         <url-pattern>/start</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Status-AvlTree</servlet-name>
+        <url-pattern>/status-avltree</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Tree-User</servlet-name>
+        <url-pattern>/Imagen</url-pattern>
     </servlet-mapping>
 </web-app>
