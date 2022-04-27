@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 public class Connect {
     private final String url = "jdbc:mysql://localhost:3306/tab_tree_avl";
@@ -22,18 +20,26 @@ public class Connect {
     private final String MYSQL = "com.mysql.cj.jdbc.Driver";
 
     public Connect() {
+        this.con = connectServert();
+    }
+
+    private Connection connectServert() {
+        Connection finalConnection = null;
         try {
             Class.forName(MYSQL);
-            con = DriverManager.getConnection(url, USER, PASSWORD);
+            finalConnection = DriverManager.getConnection(url, USER, PASSWORD);
             System.out.println("Se conecto a la base de datos");
         } catch (Exception e) {
             e.getStackTrace();
             System.out.println(e.getMessage());
             System.out.println("Error de conneccion base de datos");
         }
+        return finalConnection;
     }
 
+    // database request to table tab_image
     public ResultSet visual() {
+        this.con = connectServert();
         ResultSet result = null;
         try {
             PreparedStatement prepared = con.prepareStatement("SELECT * FROM tab_image");
@@ -45,8 +51,9 @@ public class Connect {
         return result;
     }
 
+    // seved image in table tab_image
     public boolean sevedImagen(BufferedImage image) {
-        String isert = "INSERT INTO tab_image (phot) VALUES (?  )";
+        String isert = "INSERT INTO tab_image (phot) VALUES (?)";
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ImageIO.write(image, "png", os);
@@ -54,6 +61,9 @@ public class Connect {
             PreparedStatement result = con.prepareStatement(isert);
             result.setBlob(1, is);
             result.executeUpdate();
+            is.close();
+            result.close();
+            os.close();
             return true;
         } catch (Exception e) {
             e.getStackTrace();
@@ -62,29 +72,19 @@ public class Connect {
             return false;
         }
     }
-
-    public void viewImagen(int id) {
+    // return image in table tab_image as InputStream, latest data
+    public InputStream viewImagen() {
         ResultSet result = this.visual();
+        Blob image = null;
+        InputStream binaryStream = null;
         try {
-            int idTest;
-            boolean stopSearch = false;
-            while (!stopSearch && result.next()) {
-                idTest = result.getInt(1);
+            while (result.next()) {
+                image = result.getBlob("phot");
+                binaryStream = image.getBinaryStream(1, image.length());
             }
-            Object fil = new Object();
-            Blob phot = result.getBlob(2);
-
-            byte[] data = phot.getBytes(1, (int) phot.length());
-            BufferedImage img = null;
-            try {
-                img = ImageIO.read(new ByteArrayInputStream(data));
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-            ImageIcon icon = new ImageIcon(img);
-            fil = new JLabel(icon);
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println("Erro en recoger la imagen");
         }
+        return binaryStream;
     }
 }

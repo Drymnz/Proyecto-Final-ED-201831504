@@ -5,6 +5,6 @@ flush privileges;
 USER tab_tree_avl;
 create table tab_image (
     id INT AUTO_INCREMENT,
-    phot BLOB,
+    phot MEDIUMBLOB,
     PRIMARY KEY(id)
     );

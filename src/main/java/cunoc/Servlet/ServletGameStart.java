@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import cunoc.DataBase.Connect;
 import cunoc.Logic.Converter.TextLetter;
 import cunoc.Logic.Converter.TreeGraphConverter;
@@ -36,14 +38,19 @@ public class ServletGameStart extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Gson conver = new Gson();
+        // fetch json data
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         BufferedReader re = request.getReader();
         int read;
         int data = 0;
         int type = 0;
         String json = "";
         ArrayList<Letter> listLetter = new ArrayList<>();
+        // Gson gson = new Gson();
+        // json = gson.toJson(re);
 
+        response.getWriter().print(json);
         while ((read = re.read()) != -1) {
             char ch = (char) read;
             boolean registrar = (read == 226 | read == 153);
@@ -64,8 +71,9 @@ public class ServletGameStart extends HttpServlet {
 
         }
         re.close();
+        // enter the cards
         for (Letter letter : listLetter) {
-            if (!(treeAVL.addBoolean(new NodeBinary<Letter>(letter, letter.getValue().getValue())))) {
+            if (!(treeAVL.addBoolean(new NodeBinary<Letter>(letter, letter.getWeight())))) {
                 response.setStatus(LETTER_DUPLICATED);
             } else {
                 response.setStatus(STATUS_OK);

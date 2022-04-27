@@ -35,6 +35,10 @@ public class TextLetter {
         }
         switch (array[array.length - 1]) {
             case "1":
+            case "As":
+            case "A":
+            case "a":
+            case "aS":
                 value = ListType.AS;
                 break;
             case "2":

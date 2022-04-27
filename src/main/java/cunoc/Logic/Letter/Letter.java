@@ -26,12 +26,16 @@ public class Letter {
         this.value = value;
     }
 
+    public int getWeight() {
+        return this.getValue().getValue() + this.getSimbol().getBleed();
+    }
+
     //
     @Override
     public String toString() {
         String finalStringReturn = "";
         if (this.value != null) {
-            finalStringReturn += Integer.toString(this.value.getValue());
+            finalStringReturn += this.value.toString();
         } else {
             finalStringReturn += Integer.toString(0);
         }

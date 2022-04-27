@@ -13,6 +13,16 @@ import java.awt.BasicStroke;
 public class TreeGraphConverter<T> {
 
     private final int spectText = 50;
+    private final Color WALLPAPER = Color.CYAN;
+    private final Color RECTANGLES = Color.BLACK;
+    private final Color COLOR_TEXT = Color.WHITE;
+    private final Color COLOR_LINE = Color.WHITE;
+
+
+
+
+
+
     private Tree<T> tree;
     private Graphics2D graphic;
     private int sizeText;
@@ -35,6 +45,8 @@ public class TreeGraphConverter<T> {
         Font font = new Font("Tahoma", Font.PLAIN, sizeText);
 
         this.graphic = image.createGraphics();
+        graphic.setPaint(WALLPAPER);// color rectangulo
+        this.graphic.fillRect(0, 0, width, height);
         this.graphic.setFont(font);
         // drawing and coloring
         String finalString = tree.basePrintTree();
@@ -49,18 +61,18 @@ public class TreeGraphConverter<T> {
                     int possY = ((i * sizeText * 4) + spectText);
                     int widthText = (printNode.length() * sizeText);
                     int heightText = sizeText + (sizeText / 2);
-                    graphic.setPaint(Color.WHITE);// color rectangulo
+                    graphic.setPaint(RECTANGLES);// color rectangulo
                     this.graphic.fillRect(possX, possY, widthText, heightText);
-                    graphic.setPaint(Color.BLACK);// color text
+                    graphic.setPaint(COLOR_TEXT);// color text
                     this.graphic.drawString(printNode, possX, possY + sizeText);
                     if (i < length - 1) {
                         if (arrayNode[j].getSonL() != null) {
                             printArrow(graphic, possX, possY, possX - (center / 2) + (widthText / 2),
-                                    (((i + 1) * sizeText * 4) + spectText), Color.CYAN, 3);
+                                    (((i + 1) * sizeText * 4) + spectText),COLOR_LINE , 3);
                         }
                         if (arrayNode[j].getSonR() != null) {
                             printArrow(graphic, possX + widthText, possY, possX + (center / 2) + (widthText / 2),
-                                    (((i + 1) * sizeText * 4) + spectText), Color.CYAN, 3);
+                                    (((i + 1) * sizeText * 4) + spectText),COLOR_LINE , 3);
                         }
                     }
                 }
