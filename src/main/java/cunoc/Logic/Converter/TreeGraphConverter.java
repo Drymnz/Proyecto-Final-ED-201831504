@@ -18,11 +18,6 @@ public class TreeGraphConverter<T> {
     private final Color COLOR_TEXT = Color.WHITE;
     private final Color COLOR_LINE = Color.WHITE;
 
-
-
-
-
-
     private Tree<T> tree;
     private Graphics2D graphic;
     private int sizeText;
@@ -52,8 +47,7 @@ public class TreeGraphConverter<T> {
         String finalString = tree.basePrintTree();
         this.graphic.drawString(finalString, 0, 0);
         for (int i = 0; i < length; i++) {
-            NodeBinary<T>[] arrayNode2 = new NodeBinary[(((i + 1) * 2))];
-            NodeBinary<T> arrayNode[] = tree.arrayNodeLevel(i, tree.getMain(), arrayNode2, 0);
+            NodeBinary<T>[] arrayNode = tree.arrayNodeLevel(i);
             for (int j = 0; j < arrayNode.length; j++) {
                 if (arrayNode[j] != null) {
                     String printNode = arrayNode[j].getData().toString();
@@ -68,11 +62,11 @@ public class TreeGraphConverter<T> {
                     if (i < length - 1) {
                         if (arrayNode[j].getSonL() != null) {
                             printArrow(graphic, possX, possY, possX - (center / 2) + (widthText / 2),
-                                    (((i + 1) * sizeText * 4) + spectText),COLOR_LINE , 3);
+                                    (((i + 1) * sizeText * 4) + spectText), COLOR_LINE, 3);
                         }
                         if (arrayNode[j].getSonR() != null) {
                             printArrow(graphic, possX + widthText, possY, possX + (center / 2) + (widthText / 2),
-                                    (((i + 1) * sizeText * 4) + spectText),COLOR_LINE , 3);
+                                    (((i + 1) * sizeText * 4) + spectText), COLOR_LINE, 3);
                         }
                     }
                 }
@@ -88,6 +82,17 @@ public class TreeGraphConverter<T> {
         graphic.setPaint(color);
         graphic.setStroke(new BasicStroke(stroke));
         graphic.drawLine(possOneX, possOneY, possTwoX, possTwoY);
+    }
+
+    private int pow(int base, int pow) {
+        if (pow > 1) {
+            return base * pow(base, pow - 1);
+        } else if (pow == 0) {
+            return 1;
+        } else if (pow == 1) {
+            return base;
+        }
+        return 0;
     }
 
 }

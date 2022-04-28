@@ -15,7 +15,6 @@ import cunoc.Logic.Letter.ListType;
 import cunoc.Logic.Tree.NodeBinary;
 import cunoc.Logic.Tree.Tree;
 
-
 /**
  * Unit test for simple App.
  */
@@ -146,4 +145,17 @@ public class AppTest {
         assertTrue(new TextToImage(file)
                 .converterFinal(new TreeGraphConverter<>(testTreeLetter, 50).converter()));
     }
+
+    /* private String arrayNodeLevel(int level, String node, String arrayNode, int leftMin, int rightMax, int arrayLet) {
+        if (node != null) {
+            if (level == 0) {
+                return arrayNode + node + "-XX" + "[" + leftMin + "]\n";
+            }
+            int check = rightMax - leftMin;
+            check/=2;
+            arrayNode += arrayNodeLevel(level - 1, node , "", leftMin, rightMax -check, arrayLet);
+            arrayNode += arrayNodeLevel(level - 1, node , "", rightMax -check, rightMax, arrayLet);
+        }
+        return arrayNode;
+    } */
 }

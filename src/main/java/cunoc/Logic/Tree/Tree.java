@@ -243,7 +243,7 @@ public class Tree<T> implements Runnable {
         int length = this.getHeight();
         int center = this.wide * length;
         for (int i = 0; i < length; i++) {
-            NodeBinary<T> arrayNode[] = arrayNodeLevel(i, this.main, new NodeBinary[((i + 1) * 2)], 0);
+            NodeBinary<T> arrayNode[] = arrayNodeLevel(i);
             for (int j = 0; j < arrayNode.length; j++) {
                 String += stringNode(center, arrayNode[j]);
             }
@@ -253,29 +253,36 @@ public class Tree<T> implements Runnable {
         return String;
     }
 
-    public NodeBinary<T>[] arrayNodeLevel(int level, NodeBinary<T> node, NodeBinary<T>[] arrayNode, int poss) {
-        if (poss < arrayNode.length) {
+    private int pow(int base, int pow) {
+        if (pow > 1) {
+            return base * pow(base, pow - 1);
+        } else if (pow == 0) {
+            return 1;
+        } else if (pow == 1) {
+            return base;
+        }
+        return 0;
+    }
+
+    public NodeBinary<T>[] arrayNodeLevel(int level) {
+        NodeBinary<T>[] arrayNode = new NodeBinary[pow(2, level)];
+        this.arrayNodeLevel(level, this.main, arrayNode, 0, arrayNode.length);
+        return arrayNode;
+    }
+
+    private NodeBinary<T>[] arrayNodeLevel(int level, NodeBinary<T> node, NodeBinary<T>[] arrayNode, int leftMin,
+            int rightMax) {
+        if (node != null) {
             if (level == 0) {
-                arrayNode[poss] = node;
+                if (leftMin < arrayNode.length) {
+                    arrayNode[leftMin] = node;
+                }
                 return arrayNode;
-            } else if (level > 0) {
-                int check = level - poss;
-                if (check == poss) {
-                    poss++;
-                } else if (check < 0) {
-                    check *= -1;
-                    poss++;
-                    poss += check;
-                }
-                poss = (poss == 1) ? poss + 1 : poss;
-                if (node == null) {
-                    arrayNode = arrayNodeLevel((level - 1), null, arrayNode, poss);
-                    arrayNode = arrayNodeLevel((level - 1), null, arrayNode, (poss) + 1);
-                } else {
-                    arrayNode = arrayNodeLevel((level - 1), node.getSonL(), arrayNode, poss);
-                    arrayNode = arrayNodeLevel((level - 1), node.getSonR(), arrayNode, (poss) + 1);
-                }
             }
+            int check = rightMax - leftMin;
+            check /= 2;
+            arrayNode = arrayNodeLevel(level - 1, node.getSonL(), arrayNode, leftMin, rightMax - check);
+            arrayNode = arrayNodeLevel(level - 1, node.getSonR(), arrayNode, rightMax - check, rightMax);
         }
         return arrayNode;
     }
