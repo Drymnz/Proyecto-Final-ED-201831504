@@ -107,7 +107,7 @@ public class ServletGameStart extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        
     }
 
     /*

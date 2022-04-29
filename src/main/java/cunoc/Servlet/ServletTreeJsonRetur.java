@@ -1,12 +1,17 @@
 package cunoc.Servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cunoc.Logic.Letter.Letter;
 import cunoc.Logic.Tree.NodeBinary;
 
 public class ServletTreeJsonRetur extends HttpServlet {

@@ -78,6 +78,30 @@ public class Tree<T> implements Runnable {
         }
     }
 
+    // node delete
+    public boolean leafDeletion(NodeBinary<T> data, NodeBinary<T> branch) {
+        if (data != null && branch != null) {
+            if (data.getValue() == branch.getValue()) {
+                if (branch.getSonL() == null && branch.getSonR() == null) {
+                    if (branch.getFather().getSonL().getValue() == data.getValue()) {
+                        branch.getFather().setSonL(null);
+                        return true;
+                    } else if (branch.getFather().getSonR().getValue() == data.getValue()) {
+                        branch.getFather().setSonR(null);
+                        return true;
+                    }
+                }
+                return false;
+            } else if (branch.getValue() < data.getValue()) {
+                return search(data, branch.getSonR());
+            } else {
+                return search(data, branch.getSonL());
+            }
+        } else {
+            return false;
+        }
+    }
+
     // go to last left node
     private NodeBinary<T> lastLTree(NodeBinary<T> sort) {
         if (sort.getSonL() != null) {
