@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" metadata-complete="true">
+    <!-- servlet de la pagina  -->
     <servlet>
         <servlet-name>GameStart</servlet-name>
         <servlet-class>cunoc.Servlet.ServletGameStart</servlet-class>
@@ -12,6 +13,12 @@
         <servlet-name>Tree-User</servlet-name>
         <servlet-class>cunoc.Servlet.ServletTreeUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletTreeJsonRetur</servlet-name>
+        <servlet-class>cunoc.Servlet.ServletTreeJsonRetur</servlet-class>
+    </servlet>
+    <!--FINAL  servlet de la pagina  -->
+     <!--MAPPIN  servlet de la pagina  -->
     <servlet-mapping>
         <servlet-name>GameStart</servlet-name>
         <url-pattern>/start</url-pattern>
@@ -24,4 +31,13 @@
         <servlet-name>Tree-User</servlet-name>
         <url-pattern>/Imagen</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletTreeJsonRetur</servlet-name>
+        <url-pattern>/avltree</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletTreeJsonRetur</servlet-name>
+        <url-pattern>/get-level</url-pattern>
+    </servlet-mapping>
+    <!--FINAL MAPPIN  servlet de la pagina  -->
 </web-app>

@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-
 import cunoc.DataBase.Connect;
 import cunoc.Logic.Converter.TextLetter;
 import cunoc.Logic.Converter.TreeGraphConverter;
@@ -90,8 +88,12 @@ public class ServletGameStart extends HttpServlet {
         boolean erro = true;
         if (!treeAVL.isEmpty()) {
             if (erro = conec.sevedImagen(new TreeGraphConverter<Letter>(treeAVL, SIZE_TEXT).converter())) {
-                resp.getWriter().println(pathJson(NAME_IMAGE));
-                resp.setStatus(STATUS_OK);
+                resp.setContentType("orden/json");
+                resp.setCharacterEncoding("UTF-8");
+                resp.getWriter().write(pathJson(NAME_IMAGE));
+                //System.out.println(req.getContextPath().toString());/Game
+                //System.out.println(req.getRequestURI().toString()); /Game/status-avltree
+                resp.getWriter().close();
             }
         }
         if (erro) {
@@ -102,12 +104,12 @@ public class ServletGameStart extends HttpServlet {
     private String pathJson(String url) {
         return "{\n \"path\":\"" + url + "\" \n}";
     }
-    
+
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+
     }
-    
+
     /*
      * response.setContentType("text/html;charset=UTF-8");
      * try (PrintWriter out = response.getWriter()) {
