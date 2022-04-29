@@ -191,34 +191,66 @@ public class Tree<T> implements Runnable {
     public int[] inOrderArray() {
         int itemsCounter = this.getItemsCounter();
         int[] ret = new int[itemsCounter];
-        int counter = 0;
-        NodeBinary<T> printNode = lastLTree(this.main);
-        while (counter < itemsCounter) {
-            if (printNode != null) {
-                if (!searchArrayInt(printNode.getValue(), ret)) {
-                    ret[counter] = printNode.getValue();
-                    counter++;
-                } else {
-                    if (printNode.getFather() != null) {
-                        printNode = printNode.getFather();
-                        ret[counter] = printNode.getValue();
-                        counter++;
-                    }
-                }
-            }
-            if (printNode.getSonR() == null && printNode.getSonL() == null) {
-                if (printNode.getFather() != null) {
-                    printNode = printNode.getFather();
-                }
-            } else {
-                if (printNode.getSonR() != null) {
-                    printNode = lastLTree(printNode.getSonR());
-                } else if (printNode.getSonL() != null) {
-                    printNode = lastLTree(printNode.getSonL());
-                }
-            }
+        NodeBinary<T>[] arrayNodes = this.arrayTreeInOrden();
+        for (int i = 0; i < arrayNodes.length; i++) {
+            ret[i] = arrayNodes[i].getValue();
         }
         return ret;
+    }
+
+    // Node preOrden
+    public NodeBinary<T>[] arrayTreeInPreOrden() {
+        return arrayPreOrden(this.main, new NodeBinary[this.getItemsCounter()]);
+    }
+
+    // Node preOrden
+    public NodeBinary<T>[] arrayPreOrden(NodeBinary<T> node, NodeBinary<T>[] arrayNode) {
+        if (node != null) {
+            addArrayNodeBinary(node, arrayNode);
+            arrayNode = arrayPreOrden(node.getSonL(), arrayNode);
+            arrayNode = arrayPreOrden(node.getSonR(), arrayNode);
+        }
+        return arrayNode;
+    }
+
+    // return tree in pos orden
+    public NodeBinary<T>[] arrayTreeInPosOrden() {
+        return arrayPosOrden(this.main, new NodeBinary[this.getItemsCounter()]);
+    }
+
+    // Node posOrden
+    public NodeBinary<T>[] arrayPosOrden(NodeBinary<T> node, NodeBinary<T>[] arrayNode) {
+        if (node != null) {
+            arrayNode = arrayPosOrden(node.getSonL(), arrayNode);
+            arrayNode = arrayPosOrden(node.getSonR(), arrayNode);
+            addArrayNodeBinary(node, arrayNode);
+        }
+        return arrayNode;
+    }
+
+    // return tree an inorden
+    public NodeBinary<T>[] arrayTreeInOrden() {
+        return arrayInOrden(this.main, new NodeBinary[this.getItemsCounter()]);
+    }
+
+    // Node inOrden
+    public NodeBinary<T>[] arrayInOrden(NodeBinary<T> node, NodeBinary<T>[] arrayNode) {
+        if (node != null) {
+            arrayNode = arrayInOrden(node.getSonL(), arrayNode);
+            addArrayNodeBinary(node, arrayNode);
+            arrayNode = arrayInOrden(node.getSonR(), arrayNode);
+        }
+        return arrayNode;
+    }
+
+    // add node in array of pre or pos or in orden
+    private void addArrayNodeBinary(NodeBinary<T> node, NodeBinary<T>[] arrayNode) {
+        for (int i = 0; i < arrayNode.length; i++) {
+            if (arrayNode[i] == null) {
+                arrayNode[i] = node;
+                break;
+            }
+        }
     }
 
     private boolean searchArrayInt(int data, int[] array) {
@@ -253,6 +285,7 @@ public class Tree<T> implements Runnable {
         return String;
     }
 
+    // number pow
     private int pow(int base, int pow) {
         if (pow > 1) {
             return base * pow(base, pow - 1);
@@ -264,12 +297,14 @@ public class Tree<T> implements Runnable {
         return 0;
     }
 
+    // return an array of tree levels
     public NodeBinary<T>[] arrayNodeLevel(int level) {
         NodeBinary<T>[] arrayNode = new NodeBinary[pow(2, level)];
         this.arrayNodeLevel(level, this.main, arrayNode, 0, arrayNode.length);
         return arrayNode;
     }
 
+    // return an array of node levels
     private NodeBinary<T>[] arrayNodeLevel(int level, NodeBinary<T> node, NodeBinary<T>[] arrayNode, int leftMin,
             int rightMax) {
         if (node != null) {

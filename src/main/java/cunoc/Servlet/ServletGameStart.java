@@ -102,6 +102,12 @@ public class ServletGameStart extends HttpServlet {
     private String pathJson(String url) {
         return "{\n \"path\":\"" + url + "\" \n}";
     }
+    
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+    }
+    
     /*
      * response.setContentType("text/html;charset=UTF-8");
      * try (PrintWriter out = response.getWriter()) {
