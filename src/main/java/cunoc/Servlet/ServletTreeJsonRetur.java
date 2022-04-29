@@ -2,15 +2,14 @@ package cunoc.Servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cunoc.Logic.Converter.BufferedReaderToArrayListTypeLetter;
 import cunoc.Logic.Letter.Letter;
 import cunoc.Logic.Tree.NodeBinary;
 
@@ -33,7 +32,7 @@ public class ServletTreeJsonRetur extends HttpServlet {
             resp.setCharacterEncoding("UTF-8");
             resp.getWriter().write(json);
             resp.getWriter().close();
-
+            resp.setStatus(ServletGameStart.STATUS_OK);
         }
     }
 
@@ -75,6 +74,23 @@ public class ServletTreeJsonRetur extends HttpServlet {
         return json;
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        ArrayList<Letter> listLetter = new BufferedReaderToArrayListTypeLetter(req.getReader()).converterArraylistTypeLetter();
+        ArrayList<Letter> listLetterGood = new ArrayList<>();
+        if (!ServletGameStart.treeAVL.isEmpty() && !listLetter.isEmpty() ) {
+            for (Letter iterable_element : listLetter) {
+                if (ServletGameStart.treeAVL.addBoolean(new NodeBinary<Letter>(iterable_element, iterable_element.getWeight()))) {
+                    listLetterGood.add(iterable_element);
+                    resp.setStatus(ServletGameStart.STATUS_OK);
+                }else{
+                    resp.setStatus(ServletGameStart.LETTER_DUPLICATED);
+                    break;
+                }
+            }
+        }
+    }
     private String converterNodeStringJson(NodeBinary[] arrayNode) {
         String send = "{";
         for (int i = 0; i < arrayNode.length; i++) {

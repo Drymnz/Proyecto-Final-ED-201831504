@@ -19,15 +19,19 @@ public class TextLetter {
         ListType value = null;
         switch (this.typeInt) {
             case 163:
+            case 9827:
                 type = ListSimbol.CLOVER;
                 break;
             case 165:
+            case 9829:
                 type = ListSimbol.HEART;
                 break;
             case 166:
+            case 9830:
                 type = ListSimbol.DIAMOND;
                 break;
             case 160:
+            case 9824:
                 type = ListSimbol.APPLE;
                 break;
             default:

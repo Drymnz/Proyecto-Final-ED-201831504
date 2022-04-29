@@ -78,8 +78,13 @@ public class Tree<T> implements Runnable {
         }
     }
 
+    // delete in node in tree
+    public boolean leafDeletion(NodeBinary<T> data) {
+        return leafDeletion(data, this.main);
+    }
+
     // node delete
-    public boolean leafDeletion(NodeBinary<T> data, NodeBinary<T> branch) {
+    private boolean leafDeletion(NodeBinary<T> data, NodeBinary<T> branch) {
         if (data != null && branch != null) {
             if (data.getValue() == branch.getValue()) {
                 if (branch.getSonL() == null && branch.getSonR() == null) {

@@ -39,5 +39,13 @@
         <servlet-name>ServletTreeJsonRetur</servlet-name>
         <url-pattern>/get-level</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletTreeJsonRetur</servlet-name>
+        <url-pattern>/add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GameStart</servlet-name>
+        <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
     <!--FINAL MAPPIN  servlet de la pagina  -->
 </web-app>

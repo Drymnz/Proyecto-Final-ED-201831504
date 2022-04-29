@@ -1,9 +1,7 @@
 package cunoc.Servlet;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -12,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cunoc.DataBase.Connect;
-import cunoc.Logic.Converter.TextLetter;
+import cunoc.Logic.Converter.BufferedReaderToArrayListTypeLetter;
 import cunoc.Logic.Converter.TreeGraphConverter;
 import cunoc.Logic.Letter.Letter;
 import cunoc.Logic.Tree.NodeBinary;
@@ -37,38 +35,11 @@ public class ServletGameStart extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // fetch json data
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        BufferedReader re = request.getReader();
-        int read;
-        int data = 0;
-        int type = 0;
-        String json = "";
-        ArrayList<Letter> listLetter = new ArrayList<>();
-        // Gson gson = new Gson();
-        // json = gson.toJson(re);
-
-        response.getWriter().print(json);
-        while ((read = re.read()) != -1) {
-            char ch = (char) read;
-            boolean registrar = (read == 226 | read == 153);
-            if ((read == 34 | data > 0) && !registrar) {
-                if (read == 34) {
-                    data++;
-                }
-                if (data == 4) {
-                    data = 0;
-                    listLetter.add(new TextLetter(json, type).converter());
-                    json = "";
-                }
-                type = read;
-                if (!(read == 163 | read == 165 | read == 166 | 160 == read)) {
-                    json += Character.toString(ch);
-                }
-            }
-
-        }
-        re.close();
+        request.setCharacterEncoding("UTF-8");
+        BufferedReader requestBufferd = request.getReader();
+        ArrayList<Letter> listLetter = new BufferedReaderToArrayListTypeLetter(requestBufferd)
+                .converterArraylistTypeLetter();
+        requestBufferd.close();
         // enter the cards
         for (Letter letter : listLetter) {
             if (!(treeAVL.addBoolean(new NodeBinary<Letter>(letter, letter.getWeight())))) {
@@ -91,8 +62,8 @@ public class ServletGameStart extends HttpServlet {
                 resp.setContentType("orden/json");
                 resp.setCharacterEncoding("UTF-8");
                 resp.getWriter().write(pathJson(NAME_IMAGE));
-                //System.out.println(req.getContextPath().toString());/Game
-                //System.out.println(req.getRequestURI().toString()); /Game/status-avltree
+                // System.out.println(req.getContextPath().toString());/Game
+                // System.out.println(req.getRequestURI().toString()); /Game/status-avltree
                 resp.getWriter().close();
             }
         }
@@ -107,7 +78,31 @@ public class ServletGameStart extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+        req.setCharacterEncoding("UTF-8");
+        BufferedReader requestBufferd = req.getReader();
+        ArrayList<Letter> listLetter = new BufferedReaderToArrayListTypeLetter(requestBufferd)
+                .converterArraylistTypeLetter();
+        if (!listLetter.isEmpty() && listLetter.size() > 1 && !treeAVL.isEmpty()) {
+            Letter letterOne = listLetter.get(0);
+            if (listLetter.size() == 1 && letterOne.getValue().getValue() == 13) {
+                if (!treeAVL.leafDeletion(new NodeBinary<Letter>(letterOne, letterOne.getWeight()))) {
+                    resp.setStatus(NOT_DELET_CHILDREN);
+                } 
+            } else if (listLetter.size() == 2) {
+                Letter letterTwo = listLetter.get(1);
+                if ((letterOne.getValue().getValue() + letterTwo.getValue().getValue()) == 13) {
+
+                    resp.setStatus(NOT_DELET_CHILDREN);
+                } else {
+                    resp.setStatus(NOT_SUM_TREE_13);
+                }
+            }else{
+                resp.setStatus(NOT_SUM_TREE_13);
+            }
+
+        } else {
+            resp.setStatus(ERROR);
+        }
     }
 
     /*
