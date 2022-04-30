@@ -3,11 +3,6 @@ Un backend que responde a rutas especificas mencionadas en la posterior mente.
 
 Para el desarrolo del juego Pyrmid, el cual consiste en poder agrupar 2 cartas de una baraja de poker cuya suma de sus pesos sea de 13 .
 
-**Contenidos**
-
-[TOCM]
-
-[TOC]
 
 #Rutas 
 
