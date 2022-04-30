@@ -5,36 +5,98 @@ Para el desarrolo del juego Pyrmid, el cual consiste en poder agrupar 2 cartas d
 
 ---
 
-**Table of Contents**
+**Contenidos**
+* ### Rutas
 
-[TOCM]
+    * #### Inicio del juego 
 
-[TOC]
+    * #### Insertar 
+
+    * #### Eliminar 
+
+    * #### Obtener estado del árbol avl 
+
+    * #### Obtener nivel 
+
+    * #### Obtener Árbol-(PreOrder, InOrder, PostOrder)
+
+* ### Códigos de respuesta 
+* ### Corrimiento
 
 # Rutas 
 
-## Inicio del juego [](https://github.com/pandao/editor.md )
+## Inicio del juego 
 
 Se enviara una solicitud **POST** a la ruta **Game/start**, en donde se envia como parametro un **Json** en el cual se lista las primeras cartas a almacenar.
 
-## Insertar [](https://github.com/pandao/editor.md )
+#### Ejemplo : 
+
+```
+http://localhost:8080//Game/start
+```
+
+---
+
+## Insertar
 
 Se enviara una solicitud **POST** a la ruta **Game/add**, en donde se envia como parametro un **Json** en el cual se lista la carta a insertar.
 
-## Eliminar [](https://github.com/pandao/editor.md )
+#### Ejemplo : 
+
+```
+http://localhost:8080//Game/add
+```
+
+---
+
+## Eliminar 
 
 Se enviara una solicitud **DELETE** a la ruta **Game/delete**, en donde se envia como parametro un **Json** la pareja de cartas a eliminar o carta **K** (ya que su valor es 13).
 
-## Obtener estado del árbol avl [](https://github.com/pandao/editor.md )
+#### Ejemplo : 
+
+```
+http://localhost:8080//Game/delete
+```
+
+
+---
+
+## Obtener estado del árbol avl
 
 Se enviara una solicitud **GET** a la ruta **Game/status-avltree**, en donde se recibira una ruto para la observacion de una imagen por el estado del arbol.
 
-## Obtener nivel [](https://github.com/pandao/editor.md )
+#### Ejemplo : 
+
+```
+http://localhost:8080//Game/status-avltree
+```
+
+
+---
+
+## Obtener nivel
+
 Se enviara una solicitud **GET** a la ruta **Game/get-level?level={no.level}**, donde se envia el parametro level indicando el nivel que desea returnar, de froma se obtendra un **JSON**.
 
-## Obtener Árbol-(PreOrder, InOrder, PostOrder)[](https://github.com/pandao/editor.md )
+#### Ejemplo : 
+
+```
+http://localhost:8080//Game/get-level?level=1
+```
+
+
+---
+
+## Obtener Árbol-(PreOrder, InOrder, PostOrder)
 
 Se enviara una solicitud **GET** a la ruta **Game/avltree?transversal={preOrder/inOrder/postOrder}**, donde se envia el parametro transversal que unicamente pode ser ~~{preOrder/inOrder/postOrder}~~ que desea returnar, de froma se obtendra un **JSON**.
+
+#### Ejemplo : 
+
+```
+http://localhost:8080//Game/avltree?transversal=inOrder
+```
 
 # Códigos de respuesta 
 | **Error**  |  **Código de Respuesta** |
@@ -45,6 +107,7 @@ Se enviara una solicitud **GET** a la ruta **Game/avltree?transversal={preOrder/
 |  La carta a insertar esta duplicada |  Status Code 406 |
 |Cualquier otro error   |  Status Code 400 |
 
+---
 
 # Corrimiento
 
