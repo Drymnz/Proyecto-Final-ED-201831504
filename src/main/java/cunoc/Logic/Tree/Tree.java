@@ -4,7 +4,6 @@ public class Tree<T> implements Runnable {
     private final int wide = 10;
     private final String nameTree = "Arbol";
     private final String characterSpace = " ";
-    private final String characterSons = "_";
 
     private NodeBinary<T> main = null;
 
@@ -85,46 +84,33 @@ public class Tree<T> implements Runnable {
 
     // node delete
     private boolean leafDeletion(NodeBinary<T> data, NodeBinary<T> branch) {
-        if (data != null && branch != null) {
-            if (data.getValue() == branch.getValue()) {
-                if (branch.getSonL() == null && branch.getSonR() == null) {
-                    if (branch.getFather().getSonL().getValue() == data.getValue()) {
-                        branch.getFather().setSonL(null);
-                        return true;
-                    } else if (branch.getFather().getSonR().getValue() == data.getValue()) {
-                        branch.getFather().setSonR(null);
-                        return true;
-                    }
-                }
-                return false;
-            } else if (branch.getValue() < data.getValue()) {
-                return search(data, branch.getSonR());
-            } else {
-                return search(data, branch.getSonL());
+        if (data != null) {
+            NodeBinary<T> nodeSearch = searchNode(data, this.main);
+            if (nodeSearch != null && nodeSearch.getSonL() != null && nodeSearch.getSonR() != null) {
+                nodeSearch = null;
+                return true;
             }
-        } else {
-            return false;
         }
+        return false;
+    }
+    // search node in the branch and return if is son
+    public boolean nodeIsSon(NodeBinary<T> data) {
+        NodeBinary<T> nodeSearch = searchNode(data, this.main);
+        return nodeSearch != null && nodeSearch.getSonL() != null && nodeSearch.getSonR() != null;
     }
 
-    // go to last left node
-    private NodeBinary<T> lastLTree(NodeBinary<T> sort) {
-        if (sort.getSonL() != null) {
-            sort.getSonL().setFather(sort);
-            return lastLTree(sort.getSonL());
-        } else {
-            return sort;
+    // search node in branch
+    private NodeBinary<T> searchNode(NodeBinary<T> data, NodeBinary<T> branch) {
+        if (data != null) {
+            if (data.getValue() == branch.getValue()) {
+                return branch;
+            } else if (data.getValue() > branch.getValue()) {
+                return searchNode(data, branch.getSonR());
+            } else if (data.getValue() < branch.getValue()) {
+                return searchNode(data, branch.getSonL());
+            }
         }
-    }
-
-    // go to last right node
-    private NodeBinary<T> lastRTree(NodeBinary<T> sort) {
-        if (sort.getSonR() != null) {
-            sort.getSonR().setFather(sort);
-            return lastLTree(sort.getSonR());
-        } else {
-            return sort;
-        }
+        return null;
     }
 
     @Override
@@ -280,15 +266,6 @@ public class Tree<T> implements Runnable {
                 break;
             }
         }
-    }
-
-    private boolean searchArrayInt(int data, int[] array) {
-        for (int i : array) {
-            if (i == data) {
-                return true;
-            }
-        }
-        return false;
     }
 
     // return a string from the tree

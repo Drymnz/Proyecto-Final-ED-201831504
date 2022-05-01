@@ -3,7 +3,6 @@ package cunoc.Servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,16 +23,23 @@ public class ServletTreeJsonRetur extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (ServletGameStart.treeAVL.isEmpty()) {
-            resp.setStatus(ServletGameStart.ERROR);
+        System.out.println(req.getRequestURI().toString());
+        if (req.getRequestURI().toString().equals("/Game/avltree") ||
+                req.getRequestURI().toString().equals("/Game/get-level")) {
+            if (ServletGameStart.treeAVL.isEmpty()) {
+                resp.setStatus(ServletGameStart.ERROR);
+            } else {
+                String json = doGetReusable(req, resp);
+                resp.setContentType("orden/json");
+                resp.setCharacterEncoding("UTF-8");
+                resp.getWriter().write(json);
+                resp.getWriter().close();
+                resp.setStatus(ServletGameStart.STATUS_OK);
+            }
         } else {
-            String json = doGetReusable(req, resp);
-            resp.setContentType("orden/json");
-            resp.setCharacterEncoding("UTF-8");
-            resp.getWriter().write(json);
-            resp.getWriter().close();
-            resp.setStatus(ServletGameStart.STATUS_OK);
+            resp.setStatus(ServletGameStart.ERROR);
         }
+
     }
 
     private String doGetReusable(HttpServletRequest req, HttpServletResponse resp)
@@ -60,9 +66,9 @@ public class ServletTreeJsonRetur extends HttpServlet {
             String level = req.getParameter(PARAMETER_LEVEL);
             if (level != null) {
                 int levelRetur = Integer.valueOf(level);
-                //System.out.println(ServletGameStart.treeAVL.getHeight());
-                if (levelRetur < (ServletGameStart.treeAVL.getHeight() ) && levelRetur > 0) {
-                    json = converterNodeStringJson(ServletGameStart.treeAVL.arrayNodeLevel(levelRetur-1));
+                // System.out.println(ServletGameStart.treeAVL.getHeight());
+                if (levelRetur < (ServletGameStart.treeAVL.getHeight()) && levelRetur > 0) {
+                    json = converterNodeStringJson(ServletGameStart.treeAVL.arrayNodeLevel(levelRetur - 1));
                     resp.setStatus(ServletGameStart.STATUS_OK);
                 } else {
                     resp.setStatus(ServletGameStart.ERROR);
@@ -76,21 +82,29 @@ public class ServletTreeJsonRetur extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        ArrayList<Letter> listLetter = new BufferedReaderToArrayListTypeLetter(req.getReader()).converterArraylistTypeLetter();
-        ArrayList<Letter> listLetterGood = new ArrayList<>();
-        if (!ServletGameStart.treeAVL.isEmpty() && !listLetter.isEmpty() ) {
-            for (Letter iterable_element : listLetter) {
-                if (ServletGameStart.treeAVL.addBoolean(new NodeBinary<Letter>(iterable_element, iterable_element.getWeight()))) {
-                    listLetterGood.add(iterable_element);
-                    resp.setStatus(ServletGameStart.STATUS_OK);
-                }else{
-                    resp.setStatus(ServletGameStart.LETTER_DUPLICATED);
-                    break;
+        System.out.println();
+        if (req.getRequestURI().toString().equals("/Game/add")) {
+            req.setCharacterEncoding("UTF-8");
+            ArrayList<Letter> listLetter = new BufferedReaderToArrayListTypeLetter(req.getReader())
+                    .converterArraylistTypeLetter();
+            ArrayList<Letter> listLetterGood = new ArrayList<>();
+            if (!ServletGameStart.treeAVL.isEmpty() && !listLetter.isEmpty()) {
+                for (Letter iterable_element : listLetter) {
+                    if (ServletGameStart.treeAVL
+                            .addBoolean(new NodeBinary<Letter>(iterable_element, iterable_element.getWeight()))) {
+                        listLetterGood.add(iterable_element);
+                        resp.setStatus(ServletGameStart.STATUS_OK);
+                    } else {
+                        resp.setStatus(ServletGameStart.LETTER_DUPLICATED);
+                        break;
+                    }
                 }
             }
+        } else {
+            resp.setStatus(ServletGameStart.ERROR);
         }
     }
+
     private String converterNodeStringJson(NodeBinary[] arrayNode) {
         String send = "{";
         for (int i = 0; i < arrayNode.length; i++) {

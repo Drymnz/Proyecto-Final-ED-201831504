@@ -15,18 +15,23 @@ public class ServletTreeUser extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        InputStream resultado = ServletGameStart.conec.viewImagen();
-        resp.setContentType("image/png");
-        resp.setHeader("Content-disposition", "attachment; filename=image.png");
-        try (InputStream in = resultado;
-                OutputStream out = resp.getOutputStream()) {
+        if (req.getRequestURI().toString().equals("/Game/Imagen")) {
+            InputStream resultado = ServletGameStart.conec.viewImagen();
+            resp.setContentType("image/png");
+            resp.setHeader("Content-disposition", "attachment; filename=image.png");
+            try (InputStream in = resultado;
+                    OutputStream out = resp.getOutputStream()) {
+                byte[] buffer = new byte[SIZE_IMAGE];
 
-            byte[] buffer = new byte[SIZE_IMAGE];
-
-            int numBytesRead;
-            while ((numBytesRead = in.read(buffer)) > 0) {
-                out.write(buffer, 0, numBytesRead);
+                int numBytesRead;
+                while ((numBytesRead = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, numBytesRead);
+                }
+                resp.setStatus(ServletGameStart.STATUS_OK);
             }
+        } else {
+            resp.setStatus(ServletGameStart.ERROR);
         }
+
     }
 }

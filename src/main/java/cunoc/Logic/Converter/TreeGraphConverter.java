@@ -28,6 +28,10 @@ public class TreeGraphConverter<T> {
         this.sizeText = sizeText;
     }
 
+    /*
+    convierte el arbol en un bufferd image para el uso que se dese
+    convert the tree to a bufferd-image for your use
+    */
     public BufferedImage converter() {
         int length = tree.getHeight();
 
@@ -82,17 +86,6 @@ public class TreeGraphConverter<T> {
         graphic.setPaint(color);
         graphic.setStroke(new BasicStroke(stroke));
         graphic.drawLine(possOneX, possOneY, possTwoX, possTwoY);
-    }
-
-    private int pow(int base, int pow) {
-        if (pow > 1) {
-            return base * pow(base, pow - 1);
-        } else if (pow == 0) {
-            return 1;
-        } else if (pow == 1) {
-            return base;
-        }
-        return 0;
     }
 
 }

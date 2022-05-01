@@ -6,6 +6,8 @@ Para el desarrolo del juego Pyrmid, el cual consiste en poder agrupar 2 cartas d
 ---
 
 **Contenidos**
+* ### Herramientas usadas
+
 * ### Rutas
 
     * #### Inicio del juego 
@@ -23,6 +25,14 @@ Para el desarrolo del juego Pyrmid, el cual consiste en poder agrupar 2 cartas d
 * ### Códigos de respuesta 
 * ### Corrimiento
 
+# Herramientas usadas
+
+* ### openjdk 18.0.1 
+* ### Servlet Java 4.0
+* ### MYSQL  Ver 15.1
+* ### JSP  2.3
+
+
 # Rutas 
 
 ## Inicio del juego 
@@ -32,7 +42,7 @@ Se enviara una solicitud **POST** a la ruta **Game/start**, en donde se envia co
 #### Ejemplo : 
 
 ```
-http://localhost:8080//Game/start
+http://localhost:8080/Game/start
 ```
 
 ---
@@ -44,7 +54,7 @@ Se enviara una solicitud **POST** a la ruta **Game/add**, en donde se envia como
 #### Ejemplo : 
 
 ```
-http://localhost:8080//Game/add
+http://localhost:8080/Game/add
 ```
 
 ---
@@ -56,7 +66,7 @@ Se enviara una solicitud **DELETE** a la ruta **Game/delete**, en donde se envia
 #### Ejemplo : 
 
 ```
-http://localhost:8080//Game/delete
+http://localhost:8080/Game/delete
 ```
 
 
@@ -69,7 +79,7 @@ Se enviara una solicitud **GET** a la ruta **Game/status-avltree**, en donde se 
 #### Ejemplo : 
 
 ```
-http://localhost:8080//Game/status-avltree
+http://localhost:8080/Game/status-avltree
 ```
 
 
@@ -82,7 +92,7 @@ Se enviara una solicitud **GET** a la ruta **Game/get-level?level={no.level}**, 
 #### Ejemplo : 
 
 ```
-http://localhost:8080//Game/get-level?level=1
+http://localhost:8080/Game/get-level?level=1
 ```
 
 
@@ -95,7 +105,7 @@ Se enviara una solicitud **GET** a la ruta **Game/avltree?transversal={preOrder/
 #### Ejemplo : 
 
 ```
-http://localhost:8080//Game/avltree?transversal=inOrder
+http://localhost:8080/Game/avltree?transversal=inOrder
 ```
 
 # Códigos de respuesta 
